@@ -2,21 +2,21 @@ use anyhow::Result;
 use flydist::handler::Handler;
 use flydist::message::{Message, Payload};
 
-struct EchoHandler {}
+struct GenerateHandler;
 
-impl Handler for EchoHandler {
-    fn handle(&self, message: &Message) -> Payload {
+impl Handler for GenerateHandler {
+    fn handle(&mut self, message: &Message) -> Option<Payload> {
         match &message.body.payload {
-            Payload::Generate {} => Payload::GenerateOk {
+            Payload::Generate => Some(Payload::GenerateOk {
                 id: uuid::Uuid::new_v4().to_string(),
-            },
+            }),
             _ => panic!("Unexpected payload: {:?}", message.body.payload),
         }
     }
 }
 
 fn main() -> Result<()> {
-    let handler = EchoHandler {};
+    let mut handler = GenerateHandler;
     handler.run()?;
     Ok(())
 }

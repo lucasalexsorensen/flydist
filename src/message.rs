@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -8,6 +10,18 @@ pub struct Message {
 }
 
 impl Message {
+    pub fn new(src: String, dest: String, payload: Payload) -> Self {
+        Self {
+            src,
+            dest,
+            body: Body {
+                msg_id: None,
+                in_reply_to: None,
+                payload,
+            },
+        }
+    }
+
     pub fn into_response(self, payload: Payload) -> Self {
         Self {
             src: self.dest,
@@ -20,6 +34,13 @@ impl Message {
         }
     }
 }
+
+impl std::fmt::Display for Message {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", serde_json::to_string(self).unwrap())
+    }
+}
+
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Body {
     pub msg_id: Option<usize>,
@@ -36,16 +57,28 @@ pub enum Payload {
         node_id: String,
         node_ids: Vec<String>,
     },
-    InitOk {},
+    InitOk,
     Echo {
         echo: String,
     },
     EchoOk {
         echo: String,
     },
-    Generate {},
+    Generate,
     GenerateOk {
         id: String,
+    },
+    Topology {
+        topology: HashMap<String, Vec<String>>,
+    },
+    TopologyOk,
+    Broadcast {
+        message: usize,
+    },
+    BroadcastOk,
+    Read,
+    ReadOk {
+        messages: Vec<usize>,
     },
 }
 
