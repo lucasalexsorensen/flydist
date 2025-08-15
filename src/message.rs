@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 
 use serde::{Deserialize, Serialize};
 
@@ -79,6 +79,12 @@ pub enum Payload {
     Read,
     ReadOk {
         messages: Vec<usize>,
+    },
+    Gossip {
+        messages: HashSet<usize>,
+    },
+    GossipOk {
+        diff: HashSet<usize>,
     },
 }
 

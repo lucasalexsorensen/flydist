@@ -13,8 +13,9 @@ impl Handler for EchoHandler {
     }
 }
 
-fn main() -> Result<()> {
+#[tokio::main]
+async fn main() -> Result<()> {
     let mut handler = EchoHandler;
-    handler.run()?;
+    handler.run().await?;
     Ok(())
 }

@@ -19,3 +19,9 @@ broadcast-single:
 
 broadcast-multi:
     cargo b --bin broadcast && ./maelstrom test -w broadcast --bin target/debug/broadcast --node-count 5 --time-limit 20 --rate 10
+
+broadcast-multi-fault-tolerant:
+    cargo b --bin broadcast && ./maelstrom test -w broadcast --bin target/debug/broadcast --node-count 5 --time-limit 20 --rate 10 --nemesis partition
+
+broadcast-benchmark:
+    cargo b -r --bin broadcast && ./maelstrom test -w broadcast --bin target/release/broadcast --node-count 25 --time-limit 20 --rate 100 --latency 100

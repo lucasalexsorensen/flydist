@@ -15,8 +15,9 @@ impl Handler for GenerateHandler {
     }
 }
 
-fn main() -> Result<()> {
+#[tokio::main]
+async fn main() -> Result<()> {
     let mut handler = GenerateHandler;
-    handler.run()?;
+    handler.run().await?;
     Ok(())
 }
